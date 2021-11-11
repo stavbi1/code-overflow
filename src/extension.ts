@@ -1,5 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import open = require('open');
 import * as vscode from 'vscode';
 import { getRelevantQuestions } from './stackExchangeService';
 import { getSelectedText } from './vsCodeUtil';
@@ -23,12 +24,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let disposableSearchCommand = vscode.commands.registerCommand('code-overflow.search-stackoverflow', async () => {
 		const query = getSelectedText() || await vscode.window.showInputBox();
-		if (query) {
-			const results = await getRelevantQuestions(query);
-			for (const item of results?.items) {
-				vscode.window.showInformationMessage(`${item.title}\nlink: ${item.link}`);
-			}
-		}
+		if (!query) { return; }
+
+		const result = await getRelevantQuestions(query);
+
+		const selectedQuestion = await vscode.window.showQuickPick(result.questions, { canPickMany: false });
+		
+		if (!selectedQuestion) { return; }
+		
+		await open(result.questionToLinkMapping[selectedQuestion]);
 
 	});
 
@@ -37,4 +41,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

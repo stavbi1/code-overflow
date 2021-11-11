@@ -21,6 +21,9 @@ export interface Item {
   question_id: number;
   link: string;
   title: string;
+  score: number;
+  is_answered: boolean;
+  answer_count: number;
 }
 
 export interface StackExchangeResult {
