@@ -12,7 +12,7 @@ const generateQuestionToLinkMapping = (items: { question: string; link: string; 
   return questionToLinkMapping;
 };
 
-export const getRelevantQuestions = async (query: string) => {
+export const fetchStackExchangeQuery = async (query: string) => {
   const stackExchangeUrl = `https://api.stackexchange.com/2.3/similar`;
   const defaultParams = {
     page: "1",
@@ -29,7 +29,11 @@ export const getRelevantQuestions = async (query: string) => {
       title: query
     }
   });
-  const parsedItems = res.data?.items?.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
+  return res.data?.items;
+};
+
+export const formatItems = (rawItems: Item[]) => {
+  const parsedItems = rawItems.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
   
   return {
     questions: parsedItems.map(item => item.question),

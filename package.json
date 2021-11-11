@@ -32,7 +32,30 @@
 					"group": "editor"
 				}
 			]
-		}
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "code-overflow",
+					"title": "code overflow",
+					"icon": "media/code-overflow.svg"
+				}
+			]
+		},
+		"views": {
+			"code-overflow": [
+				{
+					"id": "questions",
+					"name": "questions"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "questions",
+				"contents": "No question found.\n[Search Stackoverflow](command:code-overflow.search-stackoverflow)"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
