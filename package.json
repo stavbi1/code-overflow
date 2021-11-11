@@ -1,5 +1,5 @@
 {
-  "name": "code-overflow",
+	"name": "code-overflow",
 	"displayName": "code-overflow",
 	"description": "A vs code extension for searching and integrating with stack overflow",
 	"version": "0.0.1",
@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:code-overflow.helloWorld"
+		"onCommand:code-overflow.helloWorld",
+		"onCommand:code-overflow.search-stackoverflow"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -18,8 +19,18 @@
 			{
 				"command": "code-overflow.helloWorld",
 				"title": "Hello World"
+			},
+			{
+				"command": "code-overflow.search-stackoverflow",
+				"title": "search stackoverflow"
 			}
-		]
+		],
+		"menus": {
+			"editor/context": [{
+					"command": "code-overflow.search-stackoverflow",
+					"group": "editor"
+			}]
+	}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
@@ -47,5 +58,8 @@
 		"webpack": "^5.52.1",
 		"webpack-cli": "^4.8.0",
 		"@vscode/test-electron": "^1.6.2"
+	},
+	"dependencies": {
+		"axios": "^0.24.0"
 	}
 }
