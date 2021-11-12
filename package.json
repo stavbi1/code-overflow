@@ -10,16 +10,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:code-overflow.helloWorld",
 		"onCommand:code-overflow.search-stackoverflow"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "code-overflow.helloWorld",
-				"title": "Hello World"
-			},
 			{
 				"command": "code-overflow.search-stackoverflow",
 				"title": "search stackoverflow"
