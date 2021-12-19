@@ -5,8 +5,9 @@ import StackExchange from '../../stack-exchange/StackExchange';
 import { Item } from '../../stack-exchange/search/SearchResult';
 import { getSelectedText } from '../../vscode/VsCodeUtil';
 import { Question } from './SearchTypes';
+import { SidebarProvider } from '../../view/sidebar/SidebarProvider';
 
-export const search = async (setResults: (items: Item[]) => void): Promise<void> => {
+export const search = async (sidebar: SidebarProvider): Promise<void> => {
     const query: string = getSelectedText() || await vscode.window.showInputBox();
 
 	if (query) {
@@ -14,7 +15,7 @@ export const search = async (setResults: (items: Item[]) => void): Promise<void>
         const parsedResult: Question[] = parseItemsToQuestions(rawResult);
         
         // start of custom left side tab (in activity bar)
-        setResults(rawResult);
+        sidebar.sendMessageToSidebar({type: 'searchResult', value: rawResult});
 
         const selectedQuestion = await vscode.window.showQuickPick(
             parsedResult.map(result => result.question),

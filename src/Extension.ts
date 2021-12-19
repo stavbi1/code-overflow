@@ -5,8 +5,6 @@ import { search } from './commands/search/Search';
 import { SidebarProvider } from './view/sidebar/SidebarProvider';
 
 export function activate(context: vscode.ExtensionContext) {	
-	registerCommands(context);
-	
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
@@ -14,15 +12,17 @@ export function activate(context: vscode.ExtensionContext) {
 			sidebarProvider
 		)
 	);
+
+	registerCommands(context, sidebarProvider);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
 
-const registerCommands = (context: vscode.ExtensionContext): void => {
+const registerCommands = (context: vscode.ExtensionContext, sidebarProvider: SidebarProvider): void => {
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'code-overflow.search-stackoverflow',
-		() => search(null)
+		() => search(sidebarProvider)
 	));
 };
