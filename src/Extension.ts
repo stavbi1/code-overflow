@@ -1,27 +1,28 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
 
 import * as vscode from 'vscode';
 import { search } from './commands/search/Search';
+import { SidebarProvider } from './view/sidebar/SidebarProvider';
 
-import { TreeDataProvider } from './vscode/QuestionDataProvider';
+export function activate(context: vscode.ExtensionContext) {	
+	const sidebarProvider = new SidebarProvider(context.extensionUri);
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(
+			"questions",
+			sidebarProvider
+		)
+	);
 
-export function activate(context: vscode.ExtensionContext) {
-	console.log('activating extension');
-	const questionsTreeDataProvider = new TreeDataProvider();
-	
-	registerCommands(context, questionsTreeDataProvider);
-	vscode.window.registerTreeDataProvider('questions', questionsTreeDataProvider);
+	registerCommands(context, sidebarProvider);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
 
-const registerCommands = (context: vscode.ExtensionContext, questionsTreeDataProvider: TreeDataProvider): void => {
-	let disposableSearchCommand = vscode.commands.registerCommand(
+const registerCommands = (context: vscode.ExtensionContext, sidebarProvider: SidebarProvider): void => {
+	context.subscriptions.push(vscode.commands.registerCommand(
 		'code-overflow.search-stackoverflow',
-		() => search(questionsTreeDataProvider)
-	);
-
-	context.subscriptions.push(disposableSearchCommand);
-}
+		() => search(sidebarProvider)
+	));
+};
