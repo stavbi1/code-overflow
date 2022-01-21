@@ -7,8 +7,8 @@ import { getSelectedText } from '../../vscode/VsCodeUtil';
 import { Question } from './SearchTypes';
 import { SidebarProvider } from '../../view/sidebar/SidebarProvider';
 
-export const search = async (sidebar: SidebarProvider): Promise<void> => {
-    const query: string = getSelectedText() || await vscode.window.showInputBox();
+export const search = async (sidebar: SidebarProvider, bySelected: boolean = false): Promise<void> => {
+    const query: string = bySelected ? getSelectedText() : await vscode.window.showInputBox();
 
 	if (query) {
         const rawResult: Item[] = await StackExchange.search(query);
