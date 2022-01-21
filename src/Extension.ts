@@ -25,4 +25,9 @@ const registerCommands = (context: vscode.ExtensionContext, sidebarProvider: Sid
 		'code-overflow.search-stackoverflow',
 		() => search(sidebarProvider)
 	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'code-overflow.search-stackoverflow-selected',
+		() => search(sidebarProvider, true)
+	));
 };

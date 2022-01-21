@@ -19,12 +19,16 @@
 			{
 				"command": "code-overflow.search-stackoverflow",
 				"title": "search stackoverflow"
+			},
+			{
+				"command": "code-overflow.search-stackoverflow-selected",
+				"title": "search stackoverflow"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "code-overflow.search-stackoverflow",
+					"command": "code-overflow.search-stackoverflow-selected",
 					"group": "editor"
 				}
 			]
