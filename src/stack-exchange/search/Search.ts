@@ -18,10 +18,11 @@ const defaultOptions: SearchRequestOptions = {
 export const search = async (query: string, options: SearchRequestOptions = defaultOptions): Promise<Item[]> => {
     const axiosResult = await axios.get<SearchResult>(`${StackExchange.API_URL}/${SEARCH_ROUTE}`,{
         params: {
+            ...defaultOptions,
             ...options,
             title: query
         },
     });
 
     return axiosResult.data.items;
-}
+};

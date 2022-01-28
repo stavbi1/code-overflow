@@ -17,4 +17,7 @@ export interface SearchRequestOptions {
     sort?: SortBy;
     site?: string;
     filter?: string;
+    tagged?: string;
 }
+
+export type SearchOption = keyof SearchRequestOptions;

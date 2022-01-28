@@ -3,15 +3,17 @@ import * as vscode from 'vscode';
 
 import StackExchange from '../../stack-exchange/StackExchange';
 import { Item } from '../../stack-exchange/search/SearchResult';
-import { getSelectedText } from '../../vscode/VsCodeUtil';
+import { getConfigParameters, getSelectedText } from '../../vscode/VsCodeUtil';
 import { Question } from './SearchTypes';
 import { SidebarProvider } from '../../view/sidebar/SidebarProvider';
+import { SearchRequestOptions } from '../../stack-exchange/search/SearchRequestOptions';
 
 export const search = async (sidebar: SidebarProvider, bySelected: boolean = false): Promise<void> => {
     const query: string = bySelected ? getSelectedText() : await vscode.window.showInputBox();
 
 	if (query) {
-        const rawResult: Item[] = await StackExchange.search(query);
+        const configParameters: SearchRequestOptions = await getConfigParameters();
+        const rawResult: Item[] = await StackExchange.search(query, configParameters);
         const parsedResult: Question[] = parseItemsToQuestions(rawResult);
         
         // start of custom left side tab (in activity bar)

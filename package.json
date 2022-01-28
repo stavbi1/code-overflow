@@ -50,7 +50,34 @@
 					"type": "webview"
 				}
 			]
-		}
+		},
+		"configuration": [
+			{
+				"id": "searchConfiguration",
+				"title": "Search configuration",
+				"properties": {
+					"conf.search.tagged": {
+						"type": "string",
+						"description": "Search tag",
+						"scope": "window"
+					},
+					"conf.search.sort": {
+						"type": "string",
+						"description": "Sort by",
+						"scope": "window",
+						"enum": ["activity", "votes", "creation", "relevance"],
+						"default": "relevance"
+					},
+					"conf.search.order": {
+						"type": "string",
+						"description": "Sorting order",
+						"scope": "window",
+						"enum": ["desc", "asc"],
+						"default": "desc"
+					}
+				}
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",

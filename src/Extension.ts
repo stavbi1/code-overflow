@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { search } from './commands/search/Search';
 import { SidebarProvider } from './view/sidebar/SidebarProvider';
 
-export function activate(context: vscode.ExtensionContext) {	
+export async function activate(context: vscode.ExtensionContext) {	
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
