@@ -8,23 +8,29 @@ import { Question } from './SearchTypes';
 import { SidebarProvider } from '../../view/sidebar/SidebarProvider';
 import { SearchRequestOptions } from '../../stack-exchange/search/SearchRequestOptions';
 
-export const search = async (sidebar: SidebarProvider, bySelected: boolean = false): Promise<void> => {
-    const query: string = bySelected ? getSelectedText() : await vscode.window.showInputBox();
+export const searchSelectedText = async (sidebar: SidebarProvider): Promise<void> => {
+    return searchQuery(sidebar, getSelectedText());
+};
 
-	if (query) {
+export const searchPromptedText = async (sidebar: SidebarProvider): Promise<void> => {
+    return searchQuery(sidebar, await vscode.window.showInputBox());
+};
+
+export const searchQuery = async (sidebar: SidebarProvider, query: string): Promise<void> => {
+    if (query) {
         const configParameters: SearchRequestOptions = await getConfigParameters();
         const rawResult: Item[] = await StackExchange.search(query, configParameters);
         const parsedResult: Question[] = parseItemsToQuestions(rawResult);
-        
+
         // start of custom left side tab (in activity bar)
-        sidebar.sendMessageToSidebar({type: 'searchResult', value: rawResult});
+        sidebar.sendMessageToSidebar({ type: 'searchResult', value: rawResult });
 
         const selectedQuestion = await vscode.window.showQuickPick(
             parsedResult.map(result => result.question),
             { canPickMany: false }
         );
 
-        if (selectedQuestion) { 
+        if (selectedQuestion) {
             await open(getLinkByQuestion(parsedResult, selectedQuestion));
         }
     }
@@ -38,6 +44,6 @@ const formatItemTitle = (item: Item): string => `
     ➡️ ${item.title} 🏷️ ${item.tags.join(',')} 👩‍💻 by ${item.owner.display_name}
 `;
 
-const parseItemsToQuestions = (rawItems: Item[]): Question[] => 
-	rawItems?.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
+const parseItemsToQuestions = (rawItems: Item[]): Question[] =>
+    rawItems?.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
 

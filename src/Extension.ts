@@ -1,16 +1,23 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 import * as vscode from 'vscode';
-import { search } from './commands/search/Search';
+import { ErrorsQuickFixProvider } from './commands/quick-fix/ErrorsQuickFixProvider';
+import { searchPromptedText, searchQuery, searchSelectedText } from './commands/search/Search';
 import { SidebarProvider } from './view/sidebar/SidebarProvider';
 
-export async function activate(context: vscode.ExtensionContext) {	
+export async function activate(context: vscode.ExtensionContext) {
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
 			"questions",
 			sidebarProvider
 		)
+	);
+
+	context.subscriptions.push(
+		vscode.languages.registerCodeActionsProvider({ pattern: "*" }, new ErrorsQuickFixProvider(), {
+			providedCodeActionKinds: ErrorsQuickFixProvider.providedCodeActionKinds
+		})
 	);
 
 	registerCommands(context, sidebarProvider);
@@ -23,11 +30,16 @@ export function deactivate() { }
 const registerCommands = (context: vscode.ExtensionContext, sidebarProvider: SidebarProvider): void => {
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'code-overflow.search-stackoverflow',
-		() => search(sidebarProvider)
+		() => searchPromptedText(sidebarProvider)
 	));
 
 	context.subscriptions.push(vscode.commands.registerCommand(
 		'code-overflow.search-stackoverflow-selected',
-		() => search(sidebarProvider, true)
+		() => searchSelectedText(sidebarProvider)
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(
+		'code-overflow.search-stackoverflow-args',
+		(query: string) => searchQuery(sidebarProvider, query)
 	));
 };
