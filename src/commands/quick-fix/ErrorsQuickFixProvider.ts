@@ -13,7 +13,7 @@ export class ErrorsQuickFixProvider implements vscode.CodeActionProvider {
 	}
 
 	private createCommandCodeAction(diagnostic: vscode.Diagnostic): vscode.CodeAction {
-		const action = new vscode.CodeAction('🕵️search error in stackoverflow🕵️', vscode.CodeActionKind.QuickFix);
+		const action: vscode.CodeAction = new vscode.CodeAction('🕵️search error in stackoverflow🕵️', vscode.CodeActionKind.QuickFix);
 		action.command = { command: 'code-overflow.search-stackoverflow-args', arguments: [diagnostic.message], title: '🕵️search error in stackoverflow🕵️' };
 		action.diagnostics = [diagnostic];
 		action.isPreferred = true;
