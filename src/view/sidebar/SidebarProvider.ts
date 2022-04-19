@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { search } from '../../commands/search/Search';
+import { searchPromptedText } from '../../commands/search/Search';
 import { getNonce } from "../Nonce";
 import { SidebarMessage } from "./SidebarProviderTypes";
 
@@ -39,7 +39,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 					break;
 				}
 				case "onSearch": {
-					search(this);
+					searchPromptedText(this);
 				}
 			}
 		});
