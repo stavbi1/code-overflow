@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { search } from '../../commands/search/Search';
+import { searchPromptedText } from '../../commands/search/Search';
 import { getNonce } from "../Nonce";
 import { SidebarMessage } from "./SidebarProviderTypes";
 
@@ -8,16 +8,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 	_view?: vscode.WebviewView;
 	_doc?: vscode.TextDocument;
 
-  	constructor(private readonly _extensionUri: vscode.Uri) {}
+	constructor(private readonly _extensionUri: vscode.Uri) { }
 
 	public resolveWebviewView = (webviewView: vscode.WebviewView) => {
 		this._view = webviewView;
 
 		webviewView.webview.options = {
-		// Allow scripts in the webview
-		enableScripts: true,
+			// Allow scripts in the webview
+			enableScripts: true,
 
-		localResourceRoots: [this._extensionUri],
+			localResourceRoots: [this._extensionUri],
 		};
 
 		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
@@ -31,7 +31,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 					vscode.window.showInformationMessage(data.value);
 					break;
 				}
-					case "onError": {
+				case "onError": {
 					if (!data.value) {
 						return;
 					}
@@ -39,7 +39,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 					break;
 				}
 				case "onSearch": {
-					search(this);
+					searchPromptedText(this);
+					break;
+				}
+				case "onOpenSettings": {
+					vscode.commands.executeCommand(
+						"workbench.action.openSettings",
+						"conf.search"
+					);
+					break;
 				}
 			}
 		});
@@ -71,7 +79,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 		const nonce = getNonce();
 
 		return (
-		`<!DOCTYPE html>
+			`<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -79,9 +87,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 					Use a content security policy to only allow loading images from https or from our extension directory,
 					and only allow scripts that have a specific nonce.
 				-->
-				<meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
-					webview.cspSource
-				}; script-src 'nonce-${nonce}';">
+				<meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource
+			}; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${styleResetUri}" rel="stylesheet">
 				<link href="${styleVSCodeUri}" rel="stylesheet">
