@@ -12,7 +12,10 @@ const defaultOptions: SearchRequestOptions = {
     order: SearchOrder.DESC,
     sort: SortBy.RELEVANCE,
     site: "stackoverflow",
-    filter: "!-NHuCSBI(mK9lANRoU-O9)grUAKH9Ze7-"
+    filter: "!-NHuCSBI(mK9lANRoU-O9)grUAKH9Ze7-",
+    client_id: "23313",
+    client_secret: "hig3PgCVFfCM)3BqknIHNw((",
+    key: "fEp5lrQ4n3GA64tAL7KlnA(("
 };
 
 export const search = async (query: string, options: SearchRequestOptions = defaultOptions): Promise<Item[]> => {

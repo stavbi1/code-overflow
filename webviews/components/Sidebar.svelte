@@ -11,6 +11,12 @@
         })
     };
 
+    const openSettings = () => {
+        vscode.postMessage({
+            type: 'onOpenSettings',
+        });
+    };
+
     window.addEventListener('message', event => {
         const message = event.data; // The JSON data our extension sent
 
@@ -23,8 +29,17 @@
 </script>
 
 <style>
+    .settingsButton {
+        margin-top: 10px;
+        width: fit-content;
+        float: right;
+        cursor: pointer;
+        user-select: none;
+    }
+
     .searchButton {
         margin: 10px 0px 10px 0px;
+        width: 70%;
     }
 
     .lastResultsTitle {
@@ -38,7 +53,9 @@
 </style>
 
 <div>
+    <div class="settingsButton" on:click={openSettings}>⚙️</div>
     <button class="searchButton" on:click={search}>Search Stackoverflow</button>
+    <br/>
     {#if items.length > 0}
         <span class="lastResultsTitle">Last search results:</span>
         <ul>

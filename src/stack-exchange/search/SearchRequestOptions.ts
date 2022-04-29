@@ -18,6 +18,9 @@ export interface SearchRequestOptions {
     site?: string;
     filter?: string;
     tagged?: string;
+    client_id?: string;
+    client_secret?: string;
+    key?: string;
 }
 
 export type SearchOption = keyof SearchRequestOptions;
