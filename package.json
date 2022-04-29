@@ -86,6 +86,11 @@
 							"asc"
 						],
 						"default": "desc"
+					},
+					"conf.search.autoTag": {
+						"type": "boolean",
+						"description": "Detect language by the file extension",
+						"default": false
 					}
 				}
 			}
@@ -106,6 +111,7 @@
 		"@rollup/plugin-typescript": "^8.3.0",
 		"@tsconfig/svelte": "^1.0.0",
 		"@types/glob": "^7.1.4",
+		"@types/langmap": "^0.0.1",
 		"@types/mocha": "^9.0.0",
 		"@types/node": "14.x",
 		"@types/vscode": "^1.62.0",
@@ -132,6 +138,8 @@
 	},
 	"dependencies": {
 		"axios": "^0.24.0",
-		"open": "^8.4.0"
+		"lang-map": "^0.4.0",
+		"open": "^8.4.0",
+		"unlink": "^0.0.2"
 	}
 }

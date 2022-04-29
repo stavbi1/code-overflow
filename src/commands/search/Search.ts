@@ -20,18 +20,23 @@ export const searchQuery = async (sidebar: SidebarProvider, query: string): Prom
     if (query) {
         const configParameters: SearchRequestOptions = await getConfigParameters();
         const rawResult: Item[] = await StackExchange.search(query, configParameters);
-        const parsedResult: Question[] = parseItemsToQuestions(rawResult);
 
-        // start of custom left side tab (in activity bar)
-        sidebar.sendMessageToSidebar({ type: 'searchResult', value: rawResult });
+        if (rawResult.length > 0) {
+            const parsedResult: Question[] = parseItemsToQuestions(rawResult);
 
-        const selectedQuestion = await vscode.window.showQuickPick(
-            parsedResult.map(result => result.question),
-            { canPickMany: false }
-        );
+            // start of custom left side tab (in activity bar)
+            sidebar.sendMessageToSidebar({ type: 'searchResult', value: rawResult });
 
-        if (selectedQuestion) {
-            await open(getLinkByQuestion(parsedResult, selectedQuestion));
+            const selectedQuestion = await vscode.window.showQuickPick(
+                parsedResult.map(result => result.question),
+                { canPickMany: false }
+            );
+
+            if (selectedQuestion) {
+                await open(getLinkByQuestion(parsedResult, selectedQuestion));
+            }
+        } else {
+            vscode.window.showWarningMessage('No results found, try to elaborate..');
         }
     }
 };
@@ -46,4 +51,3 @@ const formatItemTitle = (item: Item): string => `
 
 const parseItemsToQuestions = (rawItems: Item[]): Question[] =>
     rawItems?.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
-
