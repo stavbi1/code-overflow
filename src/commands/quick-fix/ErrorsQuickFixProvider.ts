@@ -6,7 +6,7 @@ export class ErrorsQuickFixProvider implements vscode.CodeActionProvider {
 		vscode.CodeActionKind.QuickFix
 	];
 
-	provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.CodeAction[] {
+	public provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.CodeAction[] {
 		return context.diagnostics
 			.filter(diagnostic => diagnostic.severity === vscode.DiagnosticSeverity.Error)
 			.map(diagnostic => this.createCommandCodeAction(diagnostic));

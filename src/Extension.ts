@@ -14,8 +14,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		)
 	);
 
+	const languages: string[] = await vscode.languages.getLanguages();
+
 	context.subscriptions.push(
-		vscode.languages.registerCodeActionsProvider({ pattern: "*" }, new ErrorsQuickFixProvider(), {
+		vscode.languages.registerCodeActionsProvider(languages, new ErrorsQuickFixProvider(), {
 			providedCodeActionKinds: ErrorsQuickFixProvider.providedCodeActionKinds
 		})
 	);

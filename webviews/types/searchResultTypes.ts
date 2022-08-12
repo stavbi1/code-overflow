@@ -31,3 +31,8 @@ export interface Owner {
     quota_max: number;
     quota_remaining: number;
   }
+
+  export interface Question {
+    question: string;
+    link: string;
+}

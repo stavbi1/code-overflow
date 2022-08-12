@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { Item } from "../types/searchResultTypes";
+    import type { Question } from "../types/searchResultTypes";
 
-    let items: Item[] = [];
+    let items: Question[] = [];
 
     //@ts-ignore
     const vscode = acquireVsCodeApi();
@@ -62,7 +62,7 @@
         {#each items as item}
             <li>
                 <a class="link" href={item.link}>
-                    {item.title}
+                    {item.question}
                 </a>
             </li>
         {/each}

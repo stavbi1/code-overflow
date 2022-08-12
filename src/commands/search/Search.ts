@@ -25,7 +25,7 @@ export const searchQuery = async (sidebar: SidebarProvider, query: string): Prom
             const parsedResult: Question[] = parseItemsToQuestions(rawResult);
 
             // start of custom left side tab (in activity bar)
-            sidebar.sendMessageToSidebar({ type: 'searchResult', value: rawResult });
+            sidebar.sendMessageToSidebar({ type: 'searchResult', value: parsedResult });
 
             const selectedQuestion = await vscode.window.showQuickPick(
                 parsedResult.map(result => result.question),
