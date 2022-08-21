@@ -1,5 +1,6 @@
 import * as open from 'open';
 import * as vscode from 'vscode';
+import * as jsdom from 'jsdom';
 
 import StackExchange from '../../stack-exchange/StackExchange';
 import { Item } from '../../stack-exchange/search/SearchResult';
@@ -46,8 +47,15 @@ const getLinkByQuestion = (questions: Question[], question: string): string =>
 
 const formatItemTitle = (item: Item): string => `
     ${item.is_answered ? '✅' : '🤔'} ${item.score}🔺 ${item.answer_count}❗
-    ➡️ ${item.title} 🏷️ ${item.tags.join(',')} 👩‍💻 by ${item.owner.display_name}
+    ➡️ ${unescapeHtml(item.title)} 🏷️ ${item.tags.join(',')} 👩‍💻 by ${item.owner.display_name}
 `;
 
 const parseItemsToQuestions = (rawItems: Item[]): Question[] =>
     rawItems?.map(item => ({ question: formatItemTitle(item), link: item.link })) || [];
+
+
+const unescapeHtml = (html: string) => {
+    const dom = new jsdom.JSDOM(`<!DOCTYPE html><p>${html}</p>`);
+
+    return dom.window.document.querySelector("p").textContent;
+}
